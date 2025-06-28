@@ -78,21 +78,20 @@ client.on(Events.InteractionCreate, async (interaction) => {
         .setTitle('Tier Заявка — Шаг 1');
 
       const step1Fields = [
-  { id: 'tier_name', label: 'Ник | Статик | Возраст' },
-  { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм' },
-  { id: 'tier_families', label: 'В каких семьях состояли?', style: TextInputStyle.Paragraph },
-  { id: 'tier_reason', label: 'Почему выбрали нас?', style: TextInputStyle.Paragraph }
+  { id: 'tier_name', label: 'Ник | Статик | Возраст', style: TextInputStyle.Short },
+  { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм', style: TextInputStyle.Short },
+  { id: 'tier_families', label: 'В каких семьях состояли? Почему выбрали нас?', style: TextInputStyle.Paragraph }
 ];
 
-      const rows = step1Fields.map(field =>
-        new ActionRowBuilder().addComponents(
-          new TextInputBuilder()
-            .setCustomId(field.id)
-            .setLabel(field.label)
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true)
-        )
-      );
+const rows = step1Fields.map(field =>
+  new ActionRowBuilder().addComponents(
+    new TextInputBuilder()
+      .setCustomId(field.id)
+      .setLabel(field.label.slice(0, 45)) // важно ограничить до 45 символов
+      .setStyle(field.style || TextInputStyle.Short)
+      .setRequired(true)
+  )
+);
 
       modal.addComponents(...rows);
       return interaction.showModal(modal);
@@ -115,7 +114,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
         `**ID Discord**\n${interaction.user.id}`
       );
 
-    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_TIER_ID);
+    const CHANNEL_LOG_MAIN_ID = 'ID_ВАШЕГО_КАНАЛА'; // если ещё не определён — добавь в настройки
+    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
     const mentions = `<@&${LEADER_ROLE_ID}> <@&${DEPUTY_ROLE_ID}> <@&${HIGH_ROLE_ID}>`;
     if (logChannel) {
       await logChannel.send({ content: `${mentions} **Новая заявка в MAIN**`, embeds: [embed] });
