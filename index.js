@@ -84,7 +84,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
   if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'main_application') {
   const get = (id) => interaction.fields.getTextInputValue(id);
-const userTag = interaction.user.tag;
+const userTag = `<@${interaction.user.id}>`; // упоминание
 const userId = interaction.user.id;
 
 const embed = new EmbedBuilder()
