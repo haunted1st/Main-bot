@@ -108,31 +108,24 @@ client.on(Events.InteractionCreate, async (interaction) => {
   {
     id: 'tier_name',
     label: 'Ник | Статик | Возраст',
-    placeholder: 'amore | tier | 17',
+    placeholder: 'amore | 666 | 21',
     style: TextInputStyle.Short
   },
   {
     id: 'tier_timezone',
     label: 'Ваш часовой пояс | Прайм-тайм',
-    placeholder: 'GMT+3 | 19:00–23:00',
+    placeholder: '+2 МСК | 14:00–00:00',
     style: TextInputStyle.Short
   },
   {
     id: 'tier_families',
     label: 'Сколько у вас часов в GTA V?',
-    placeholder: '1400+ часов, играл на Majestic, Rodina...',
+    placeholder: '1488+ часов',
     style: TextInputStyle.Paragraph
   },
   {
     id: 'tier_reason',
-    label: 'Как оцениваете свою игру? (0–10)',
-    placeholder: '7 — умею стрелять, знаю правила, учусь играть в тиме',
-    style: TextInputStyle.Paragraph
-  }
-];
-  {
-    id: 'tier_reason',
-    label: 'Как оцениваете свою игру? (0–10)',
+    label: 'Как оцениваете свою игру?',
     placeholder: '7 — умею стрелять, знаю правила, учусь играть в тиме',
     style: TextInputStyle.Paragraph
   }
