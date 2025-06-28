@@ -132,7 +132,7 @@ if (lastMenu) {
 
 // 🆕 Отправляем новое меню
 await interaction.channel.send({
-  content: 'Хотите подать ещё одну заявку?',
+  content: 'Выберите тип заявки',
   components: [
     new ActionRowBuilder().addComponents(
       new StringSelectMenuBuilder()
