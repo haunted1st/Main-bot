@@ -52,20 +52,45 @@ client.on(Events.InteractionCreate, async (interaction) => {
         .setTitle('Подать заявку в MAIN');
 
       const fields = [
-        { id: 'full_name', label: 'Ник | Статик | Возраст', placeholder: 'Sky | 100000 | 20' },
-        { id: 'timezone', label: 'Ваш часовой пояс | Прайм-тайм', placeholder: '+1 от МСК | 14:00-00:00' },
-        { id: 'gta_hours', label: 'Сколько у вас часов в GTA V?', placeholder: '1488+ часов' },
-        { id: 'tournaments', label: 'Готовы ли вы участвовать во всех турнирах?', placeholder: 'Да, готов.' },
-        { id: 'saiga', label: 'Откат стрельбы (Сайги + Тяжки)', placeholder: 'https://youtube.com/(от 5 минут)' }
-      ];
+  {
+    id: 'full_name',
+    label: 'Ник | Статик | Возраст',
+    placeholder: 'Sky | 100000 | 20',
+    style: TextInputStyle.Short
+  },
+  {
+    id: 'timezone',
+    label: 'Ваш часовой пояс | Прайм-тайм',
+    placeholder: '+1 от МСК | 14:00-00:00',
+    style: TextInputStyle.Short
+  },
+  {
+    id: 'gta_hours',
+    label: 'Сколько у вас часов в GTA V?',
+    placeholder: '1488+ часов',
+    style: TextInputStyle.Paragraph
+  },
+  {
+    id: 'tournaments',
+    label: 'Готовы ли вы участвовать во всех турнирах?',
+    placeholder: 'Да, готов.',
+    style: TextInputStyle.Paragraph
+  },
+  {
+    id: 'saiga',
+    label: 'Откат стрельбы (Сайга + Тяжи)',
+    placeholder: 'https://youtube.com/(от 5 минут)',
+    style: TextInputStyle.Paragraph
+  }
+];
 
      const rows = fields.map(field =>
   new ActionRowBuilder().addComponents(
     new TextInputBuilder()
       .setCustomId(field.id)
       .setLabel(field.label.slice(0, 45))
-      .setStyle(TextInputStyle.Short)
       .setPlaceholder(field.placeholder || '')
+      .setStyle(field.style || TextInputStyle.Short)
       .setRequired(true)
         )
       );
