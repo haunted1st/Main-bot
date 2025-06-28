@@ -59,24 +59,25 @@ client.on(Events.InteractionCreate, async (interaction) => {
       .setTitle('Заявка в MAIN');
 
     const inputs = [
-      { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
-      { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
-      { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
-      { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
-      { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short }
-    ];
+  { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
+  { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
+  { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
+  { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
+  { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short },
+  { id: 'discord_name', label: 'Ваш Discord (пример: user#0000)', style: TextInputStyle.Short }
+];
 
-    const rows = inputs.map(input =>
-      new ActionRowBuilder().addComponents(
-        new TextInputBuilder()
-          .setCustomId(input.id)
-          .setLabel(input.label)
-          .setStyle(input.style)
-          .setRequired(true)
-      )
-    );
+const rows = inputs.map(input =>
+  new ActionRowBuilder().addComponents(
+    new TextInputBuilder()
+      .setCustomId(input.id)
+      .setLabel(input.label)
+      .setStyle(input.style)
+      .setRequired(true)
+  )
+);
 
-    modal.addComponents(...rows.slice(0, 5));
+modal.addComponents(...rows);
 
     // ✅ defer first then show modal
     await interaction.deferUpdate();
