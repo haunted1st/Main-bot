@@ -80,7 +80,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
         );
 
         modal.addComponents(...rows);
-        await interaction.deferUpdate();
         await interaction.showModal(modal);
       }
     }
@@ -115,6 +114,23 @@ if (logChannel) {
     embeds: [embed],
   });
 }
+
+// 🧹 Удаляем старое меню, если оно осталось
+const messages = await interaction.channel.messages.fetch({ limit: 10 });
+const lastMenu = messages.find(m =>
+  m.author.id === client.user.id &&
+  m.components.length &&
+  m.components[0].components[0].data?.custom_id === 'application_selector'
+);
+if (lastMenu) {
+  try {
+    await lastMenu.delete();
+  } catch (err) {
+    console.error('Не удалось удалить старое меню:', err.message);
+  }
+}
+
+// 🆕 Отправляем новое меню
 await interaction.channel.send({
   content: 'Хотите подать ещё одну заявку?',
   components: [
@@ -126,7 +142,8 @@ await interaction.channel.send({
     )
   ]
 });
-  await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
+
+await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
   }
 });
 
