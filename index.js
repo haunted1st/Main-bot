@@ -79,8 +79,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
       const step1Fields = [
         { id: 'tier_name', label: 'Ник | Статик | Возраст' },
-        { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм' },
-        { id: 'tier_families', label: 'В каких семьях состояли? | Почему выбрали нас?' }
+        { id: 'past_families', label: 'В каких семьях состояли?', style: TextInputStyle.Paragraph },
+{ id: 'why_us', label: 'Почему выбрали нас?', style: TextInputStyle.Paragraph }
       ];
 
       const rows = step1Fields.map(field =>
