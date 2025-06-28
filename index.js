@@ -84,34 +84,36 @@ client.on(Events.InteractionCreate, async (interaction) => {
   }
 
   if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'main_application') {
-    const get = (id) => interaction.fields.getTextInputValue(id);
+  const get = (id) => interaction.fields.getTextInputValue(id);
 
-    const embed = new EmbedBuilder()
-      .setColor(0x5865f2)
-      .setDescription(
-        `**Имя и фамилия в игре**\n${get('full_name')}\n\n` +
-        `**Статистический ID**\n${get('stat_id')}\n\n` +
-        `**Ваш прайм-тайм ( основное, наилучшее время нахождения в игре )**\n${get('prime_time')}\n\n` +
-        `**Откат стрельбы GunGame (Караба, бой насмерть, от 2-ух минут)**\n${get('karaba_link')}\n\n` +
-        `**Откат стрельбы GunGame (Сайга, бой насмерть, от 2-ух минут)**\n${get('saiga_link')}\n\n` +
-        `**Ваш Discord**\n${get('discord_name')}\n\n` +
-        `${dayjs().format('D/M/YYYY H:mm')}`
-      );
+  const embed = new EmbedBuilder()
+    .setTitle('**Новая заявка в MAIN**')
+    .setColor(0x5865f2)
+    .setDescription(
+      `**Имя и фамилия в игре**\n${get('full_name')}\n\n` +
+      `**Статистический ID**\n${get('stat_id')}\n\n` +
+      `**Ваш прайм-тайм ( основное, наилучшее время нахождения в игре )**\n${get('prime_time')}\n\n` +
+      `**Откат стрельбы GunGame (Караба, бой насмерть, от 2-ух минут)**\n${get('karaba_link')}\n\n` +
+      `**Откат стрельбы GunGame (Сайга, бой насмерть, от 2-ух минут)**\n${get('saiga_link')}\n\n` +
+      `**Ваш Discord**\n<@${interaction.user.id}>\n\n` +
+      `**ID Discord**\n${interaction.user.id}\n\n` +
+      `${dayjs().format('D/M/YYYY H:mm')}`
+    );
 
-    const leader = `<@&${LEADER_ROLE_ID}>`;
-    const deputy = `<@&${DEPUTY_ROLE_ID}>`;
-    const high = `<@&${HIGH_ROLE_ID}>`;
+  const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
+  const leader = `<@&${LEADER_ROLE_ID}>`;
+  const deputy = `<@&${DEPUTY_ROLE_ID}>`;
+  const high = `<@&${HIGH_ROLE_ID}>`;
 
-    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
-    if (logChannel) {
-      await logChannel.send({
-        content: `${leader} ${deputy} ${high} **Новая заявка в MAIN**`,
-        embeds: [embed],
-      });
-    }
-
-    await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
+  if (logChannel) {
+    await logChannel.send({
+      content: `${leader} ${deputy} ${high} **Новая заявка в MAIN**`,
+      embeds: [embed],
+    });
   }
+
+  await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
+ }
 });
 
 client.login(process.env.TOKEN);
