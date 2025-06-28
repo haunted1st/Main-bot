@@ -2,8 +2,14 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-app.get('/', (req, res) => res.send('✅ Бот работает'));
-app.listen(3000, () => console.log('🌐 Express сервер запущен на порту 3000'));
+
+app.get('/', (req, res) => {
+  res.send('✅ Бот работает!');
+});
+
+app.listen(3000, () => {
+  console.log('🌐 Express-сервер запущен на порту 3000');
+});
 
 const {
   Client,
