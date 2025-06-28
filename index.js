@@ -101,4 +101,5 @@ client.on(Events.InteractionCreate, async interaction => {
   await interaction.reply({ content: `✅ Заявка в ${selected.toUpperCase()} отправлена!`, ephemeral: true });
 });
 
-console.log(process.env.TOKEN);
+client.login(process.env.TOKEN);
+
