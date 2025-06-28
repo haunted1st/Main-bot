@@ -39,11 +39,6 @@ const DEPUTY_ROLE_ID = '1200045928460058768';
 const CHANNEL_LOG_MAIN_ID = '1300952587930959942';
 const CHANNEL_LOG_TIER_ID = '1349389519287357470';
 
-// === Express-сервер ===
-const app = express();
-app.get('/', (req, res) => res.send('✅ Бот работает'));
-app.listen(3000, () => console.log('🌐 Express-сервер запущен на порту 3000'));
-
 // === Discord клиент ===
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
