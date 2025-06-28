@@ -59,13 +59,12 @@ client.on(Events.InteractionCreate, async (interaction) => {
           .setTitle('Подать заявку в MAIN');
 
         const inputs = [
-          { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
-          { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
-          { id: 'prime_time', label: 'Ваш прайм-тайм (основное время в игре)', style: TextInputStyle.Paragraph },
-          { id: 'karaba_link', label: 'Откат стрельбы GunGame (Караба от 2-ух минут)', style: TextInputStyle.Short },
-          { id: 'saiga_link', label: 'Откат стрельбы GunGame (Сайга от 2-ух минут)', style: TextInputStyle.Short },
-          { id: 'discord_name', label: 'Ваш Discord (пример: user#0000)', style: TextInputStyle.Short },
-        ];
+  { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
+  { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
+  { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
+  { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
+  { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short }
+];
 
         const rows = inputs.map(input =>
           new ActionRowBuilder().addComponents(
@@ -85,33 +84,33 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
   if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'main_application') {
   const get = (id) => interaction.fields.getTextInputValue(id);
+const userTag = interaction.user.tag;
+const userId = interaction.user.id;
 
-  const embed = new EmbedBuilder()
-    .setTitle('**Новая заявка в MAIN**')
-    .setColor(0x5865f2)
-    .setDescription(
-      `**Имя и фамилия в игре**\n${get('full_name')}\n\n` +
-      `**Статистический ID**\n${get('stat_id')}\n\n` +
-      `**Ваш прайм-тайм ( основное, наилучшее время нахождения в игре )**\n${get('prime_time')}\n\n` +
-      `**Откат стрельбы GunGame (Караба, бой насмерть, от 2-ух минут)**\n${get('karaba_link')}\n\n` +
-      `**Откат стрельбы GunGame (Сайга, бой насмерть, от 2-ух минут)**\n${get('saiga_link')}\n\n` +
-      `**Ваш Discord**\n<@${interaction.user.id}>\n\n` +
-      `**ID Discord**\n${interaction.user.id}\n\n` +
-      `${dayjs().format('D/M/YYYY H:mm')}`
-    );
+const embed = new EmbedBuilder()
+  .setTitle('**Новая заявка в MAIN**')
+  .setColor(0x5865f2)
+  .setDescription(
+    `**Имя и фамилия в игре**\n${get('full_name')}\n\n` +
+    `**Статистический ID**\n${get('stat_id')}\n\n` +
+    `**Ваш прайм-тайм**\n${get('prime_time')}\n\n` +
+    `**Откат стрельбы (Караба)**\n${get('karaba_link')}\n\n` +
+    `**Откат стрельбы (Сайга)**\n${get('saiga_link')}\n\n` +
+    `**Ваш Discord**\n${userTag}\n\n` +
+    `**ID Discord**\n${userId}`
+  );
 
   const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
   const leader = `<@&${LEADER_ROLE_ID}>`;
   const deputy = `<@&${DEPUTY_ROLE_ID}>`;
   const high = `<@&${HIGH_ROLE_ID}>`;
 
-  if (logChannel) {
-    await logChannel.send({
-      content: `${leader} ${deputy} ${high} **Новая заявка в MAIN**`,
-      embeds: [embed],
-    });
-  }
-
+if (logChannel) {
+  await logChannel.send({
+    content: `${leader} ${deputy} ${high} **Новая заявка в MAIN**`,
+    embeds: [embed],
+  });
+}
   await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
  }
 });
