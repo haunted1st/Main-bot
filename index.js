@@ -1,32 +1,30 @@
 require('dotenv').config();
 const express = require('express');
+const { 
+  Client, GatewayIntentBits, Events, InteractionType,
+  EmbedBuilder, ModalBuilder, TextInputBuilder, 
+  TextInputStyle, ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder, ButtonStyle 
+} = require('discord.js');
+
 const app = express();
 app.get('/', (_, res) => res.send('✅ Бот работает!'));
 app.listen(3000, () => console.log('🌐 Express-сервер запущен на порту 3000'));
 
-const {
-  Client,
-  GatewayIntentBits,
-  EmbedBuilder,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  ActionRowBuilder,
-  StringSelectMenuBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  Events,
-  InteractionType,
-  ComponentType
-} = require('discord.js');
-
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-const APPLICATION_CHANNEL_ID = '1349389519287357470';
-const TEMP_APPLICATION_DATA = new Map();
+// Настройки
+const INVITE_CHANNEL_ID = '1387148896320487564';
+const CHANNEL_LOG_TIER_ID = '1349389519287357470';
+const LEADER_ROLE_ID = '1200040982746517595';
+const DEPUTY_ROLE_ID = '1200045928460058768';
+const HIGH_ROLE_ID = '1200046656666730527';
 
+// Временное хранилище для Tier
+const tierApplications = new Map();
+
+// Отправка SELECT меню
 client.once(Events.ClientReady, async () => {
-  const channel = await client.channels.fetch('1387148896320487564');
+  const channel = await client.channels.fetch(INVITE_CHANNEL_ID);
   if (!channel) return console.error('Канал не найден');
 
   const menu = new StringSelectMenuBuilder()
@@ -34,94 +32,166 @@ client.once(Events.ClientReady, async () => {
     .setPlaceholder('Выберите тип заявки')
     .addOptions([
       { label: 'Main', value: 'main', emoji: '📝' },
-      { label: 'Tier', value: 'tier', emoji: '📋' }
+      { label: 'Tier', value: 'tier', emoji: '🧩' },
     ]);
 
   const row = new ActionRowBuilder().addComponents(menu);
-
-  await channel.send({
-    content: 'Выберите тип заявки:',
-    components: [row]
-  });
+  await channel.send({ content: 'Выберите тип заявки:', components: [row] });
 });
 
+// Обработка взаимодействий
 client.on(Events.InteractionCreate, async (interaction) => {
+  // Select menu
   if (interaction.isStringSelectMenu() && interaction.customId === 'application_selector') {
     const selected = interaction.values[0];
-    const modal = new ModalBuilder()
-      .setCustomId(`step1_${selected}`)
-      .setTitle(`Заявка - шаг 1 [${selected.toUpperCase()}]`);
 
-    const fields = [
-      { id: 'full_name', label: 'Ник | Статик | Возраст', style: TextInputStyle.Short },
-      { id: 'timezone', label: 'Ваш часовой пояс | Прайм-тайм', style: TextInputStyle.Short },
-      { id: 'hours', label: 'Сколько у вас часов в GTA V?', style: TextInputStyle.Short }
-    ];
+    if (selected === 'main') {
+      const modal = new ModalBuilder()
+        .setCustomId('main_application')
+        .setTitle('Подать заявку в MAIN');
 
-    const rows = fields.map(f => new ActionRowBuilder().addComponents(
-      new TextInputBuilder().setCustomId(f.id).setLabel(f.label).setStyle(f.style).setRequired(true)
-    ));
-
-    modal.addComponents(...rows);
-    await interaction.showModal(modal);
-  }
-
-  if (interaction.type === InteractionType.ModalSubmit) {
-    const [step, type] = interaction.customId.split('_');
-
-    if (step === 'step1') {
-      TEMP_APPLICATION_DATA.set(interaction.user.id, {
-        type,
-        full_name: interaction.fields.getTextInputValue('full_name'),
-        timezone: interaction.fields.getTextInputValue('timezone'),
-        hours: interaction.fields.getTextInputValue('hours')
-      });
-
-      const modal2 = new ModalBuilder()
-        .setCustomId(`step2_${type}`)
-        .setTitle(`Заявка - шаг 2 [${type.toUpperCase()}]`);
-
-      const fields2 = [
-        { id: 'tournament', label: 'Готовы ли вы участвовать в турнирах?', style: TextInputStyle.Short },
-        { id: 'shooting', label: 'Откат стрельбы', style: TextInputStyle.Short }
+      const fields = [
+        { id: 'full_name', label: 'Ник | Статик | Возраст' },
+        { id: 'timezone', label: 'Ваш часовой пояс | Прайм-тайм' },
+        { id: 'gta_hours', label: 'Сколько у вас часов в GTA V?' },
+        { id: 'tournaments', label: 'Готовы ли вы участвовать во всех турнирах?' },
+        { id: 'saiga', label: 'Откат стрельбы (Сайга)' }
       ];
 
-      const rows2 = fields2.map(f => new ActionRowBuilder().addComponents(
-        new TextInputBuilder().setCustomId(f.id).setLabel(f.label).setStyle(f.style).setRequired(true)
-      ));
+      const rows = fields.map(field =>
+        new ActionRowBuilder().addComponents(
+          new TextInputBuilder()
+            .setCustomId(field.id)
+            .setLabel(field.label)
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+        )
+      );
 
-      modal2.addComponents(...rows2);
-      await interaction.showModal(modal2);
+      modal.addComponents(...rows);
+      return interaction.showModal(modal);
     }
 
-    if (step === 'step2') {
-      const data = TEMP_APPLICATION_DATA.get(interaction.user.id);
-      if (!data) return interaction.reply({ content: '⚠️ Ошибка. Не найдены данные первой формы.', ephemeral: true });
+    if (selected === 'tier') {
+      const modal = new ModalBuilder()
+        .setCustomId('tier_step1')
+        .setTitle('Tier Заявка — Шаг 1');
 
-      data.tournament = interaction.fields.getTextInputValue('tournament');
-      data.shooting = interaction.fields.getTextInputValue('shooting');
+      const step1Fields = [
+        { id: 'tier_name', label: 'Ник | Статик | Возраст' },
+        { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм' },
+        { id: 'tier_families', label: 'В каких семьях состояли? | Почему выбрали нас?' }
+      ];
 
-      const embed = new EmbedBuilder()
-        .setTitle(`📩 Новая заявка в ${data.type.toUpperCase()}`)
-        .setColor(0x2f3136)
-        .setDescription(
-          `**Ник | Статик | Возраст**\n${data.full_name}\n\n` +
-          `**Ваш часовой пояс | Прайм-тайм**\n${data.timezone}\n\n` +
-          `**Сколько у вас часов в GTA V?**\n${data.hours}\n\n` +
-          `**Готовы ли вы участвовать в турнирах?**\n${data.tournament}\n\n` +
-          `**Откат стрельбы**\n${data.shooting}\n\n` +
-          `**Ваш Discord**\n<@${interaction.user.id}>\n\n` +
-          `**ID Discord**\n${interaction.user.id}`
-        );
+      const rows = step1Fields.map(field =>
+        new ActionRowBuilder().addComponents(
+          new TextInputBuilder()
+            .setCustomId(field.id)
+            .setLabel(field.label)
+            .setStyle(TextInputStyle.Short)
+            .setRequired(true)
+        )
+      );
 
-      const channel = await interaction.guild.channels.fetch(APPLICATION_CHANNEL_ID);
-      if (channel) {
-        await channel.send({ embeds: [embed] });
-      }
-
-      TEMP_APPLICATION_DATA.delete(interaction.user.id);
-      await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
+      modal.addComponents(...rows);
+      return interaction.showModal(modal);
     }
+  }
+
+  // MAIN заявка
+  if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'main_application') {
+    const get = (id) => interaction.fields.getTextInputValue(id);
+    const embed = new EmbedBuilder()
+      .setTitle('**Новая заявка в MAIN**')
+      .setColor(0x5865f2)
+      .setDescription(
+        `**Ник | Статик | Возраст**\n${get('full_name')}\n\n` +
+        `**Часовой пояс | Прайм-тайм**\n${get('timezone')}\n\n` +
+        `**Часы в GTA V**\n${get('gta_hours')}\n\n` +
+        `**Готовность к турнирам**\n${get('tournaments')}\n\n` +
+        `**Откат стрельбы (Сайга)**\n${get('saiga')}\n\n` +
+        `**Ваш Discord**\n<@${interaction.user.id}>\n\n` +
+        `**ID Discord**\n${interaction.user.id}`
+      );
+
+    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_TIER_ID);
+    const mentions = `<@&${LEADER_ROLE_ID}> <@&${DEPUTY_ROLE_ID}> <@&${HIGH_ROLE_ID}>`;
+    if (logChannel) {
+      await logChannel.send({ content: `${mentions} **Новая заявка в MAIN**`, embeds: [embed] });
+    }
+
+    return interaction.reply({ content: '✅ Заявка в MAIN отправлена!', ephemeral: true });
+  }
+
+  // Tier Шаг 1
+  if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'tier_step1') {
+    const userId = interaction.user.id;
+    tierApplications.set(userId, {
+      tier_name: interaction.fields.getTextInputValue('tier_name'),
+      tier_timezone: interaction.fields.getTextInputValue('tier_timezone'),
+      tier_families: interaction.fields.getTextInputValue('tier_families'),
+    });
+
+    const modal2 = new ModalBuilder()
+      .setCustomId('tier_step2')
+      .setTitle('Tier Заявка — Шаг 2');
+
+    const step2Fields = [
+      { id: 'tier_rules', label: 'Знание правил (1–10)' },
+      { id: 'tier_micro', label: 'Микрофон и речь (1–10)' },
+      { id: 'tier_behavior', label: 'Рассудительность и поведение (1–10)' },
+      { id: 'tier_shooting', label: 'Стрельба (1–10)' },
+      { id: 'tier_comment', label: 'Комментарий / Сообщение лидерам' }
+    ];
+
+    const rows = step2Fields.map(field =>
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
+          .setCustomId(field.id)
+          .setLabel(field.label)
+          .setStyle(TextInputStyle.Short)
+          .setRequired(true)
+      )
+    );
+
+    modal2.addComponents(...rows);
+    return interaction.showModal(modal2);
+  }
+
+  // Tier Шаг 2 — отправка
+  if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'tier_step2') {
+    const userId = interaction.user.id;
+    const saved = tierApplications.get(userId);
+    if (!saved) {
+      return interaction.reply({ content: '❌ Не найдены данные из первого шага.', ephemeral: true });
+    }
+
+    const get = (id) => interaction.fields.getTextInputValue(id);
+    const embed = new EmbedBuilder()
+      .setTitle('**Новая заявка в TIER**')
+      .setColor(0xf59e42)
+      .setDescription(
+        `**Ник | Статик | Возраст**\n${saved.tier_name}\n\n` +
+        `**Часовой пояс | Прайм-тайм**\n${saved.tier_timezone}\n\n` +
+        `**Семьи и причина**\n${saved.tier_families}\n\n` +
+        `**Знание правил:** ${get('tier_rules')}\n` +
+        `**Микрофон и речь:** ${get('tier_micro')}\n` +
+        `**Рассудительность:** ${get('tier_behavior')}\n` +
+        `**Стрельба:** ${get('tier_shooting')}\n\n` +
+        `**Комментарий:**\n${get('tier_comment')}\n\n` +
+        `**Ваш Discord:** <@${userId}>\n` +
+        `**ID Discord:** ${userId}`
+      );
+
+    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_TIER_ID);
+    const mentions = `<@&${LEADER_ROLE_ID}> <@&${DEPUTY_ROLE_ID}> <@&${HIGH_ROLE_ID}>`;
+
+    if (logChannel) {
+      await logChannel.send({ content: `${mentions} **Новая заявка в TIER**`, embeds: [embed] });
+    }
+
+    tierApplications.delete(userId);
+    return interaction.reply({ content: '✅ Заявка в TIER отправлена!', ephemeral: true });
   }
 });
 
