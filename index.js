@@ -48,48 +48,45 @@ client.once(Events.ClientReady, async () => {
 });
 
 // Обработка меню и формы
-client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isStringSelectMenu()) return;
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isStringSelectMenu()) {
+    if (interaction.customId === 'application_selector') {
+      const selected = interaction.values[0];
 
-  if (interaction.customId === 'application_selector') {
-    const selected = interaction.values[0];
+      if (selected === 'main') {
+        const modal = new ModalBuilder()
+          .setCustomId('main_application')
+          .setTitle('Подать заявку в MAIN');
 
-    if (selected === 'main') {
-      const modal = new ModalBuilder()
-        .setCustomId('main_application')
-        .setTitle('Заявка в MAIN');
+        const inputs = [
+          { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
+          { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
+          { id: 'prime_time', label: 'Ваш прайм-тайм ( основное, наилучшее время нахождения в игре )', style: TextInputStyle.Paragraph },
+          { id: 'karaba_link', label: 'Откат стрельбы GunGame (Караба, бой насмерть, от 2-ух минут)', style: TextInputStyle.Short },
+          { id: 'saiga_link', label: 'Откат стрельбы GunGame (Сайга, бой насмерть, от 2-ух минут)', style: TextInputStyle.Short },
+          { id: 'discord_name', label: 'Ваш Discord (пример: user#0000)', style: TextInputStyle.Short },
+        ];
 
-    const inputs = [
-  { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
-  { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
-  { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
-  { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
-  { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short },
-  { id: 'discord_name', label: 'Ваш Discord (пример: user#0000)', style: TextInputStyle.Short }
-];
+        const rows = inputs.map(input =>
+          new ActionRowBuilder().addComponents(
+            new TextInputBuilder()
+              .setCustomId(input.id)
+              .setLabel(input.label)
+              .setStyle(input.style)
+              .setRequired(true)
+          )
+        );
 
-const rows = inputs.map(input =>
-  new ActionRowBuilder().addComponents(
-    new TextInputBuilder()
-      .setCustomId(input.id)
-      .setLabel(input.label)
-      .setStyle(input.style)
-      .setRequired(true)
-  )
-);
-
-    modal.addComponents(...rows);
-
-    await interaction.showModal(modal);
+        modal.addComponents(...rows);
+        await interaction.showModal(modal);
+      }
+    }
   }
-}
 
-  // Обработка отправки формы
   if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'main_application') {
     const get = (id) => interaction.fields.getTextInputValue(id);
 
     const embed = new EmbedBuilder()
-      .setTitle('**Новая заявка в MAIN**')
       .setColor(0x5865f2)
       .setDescription(
         `**Имя и фамилия в игре**\n${get('full_name')}\n\n` +
@@ -98,14 +95,14 @@ const rows = inputs.map(input =>
         `**Откат стрельбы GunGame (Караба, бой насмерть, от 2-ух минут)**\n${get('karaba_link')}\n\n` +
         `**Откат стрельбы GunGame (Сайга, бой насмерть, от 2-ух минут)**\n${get('saiga_link')}\n\n` +
         `**Ваш Discord**\n${get('discord_name')}\n\n` +
-        `${dayjs().format('M/D/YYYY H:mm')}`
+        `${dayjs().format('D/M/YYYY H:mm')}`
       );
 
-    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
     const leader = `<@&${LEADER_ROLE_ID}>`;
     const deputy = `<@&${DEPUTY_ROLE_ID}>`;
     const high = `<@&${HIGH_ROLE_ID}>`;
 
+    const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
     if (logChannel) {
       await logChannel.send({
         content: `${leader} ${deputy} ${high} **Новая заявка в MAIN**`,
