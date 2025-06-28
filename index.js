@@ -59,13 +59,14 @@ client.on(Events.InteractionCreate, async (interaction) => {
         { id: 'saiga', label: 'Откат стрельбы (Сайги + Тяжки)', placeholder: 'https://youtube.com/(от 5 минут)' }
       ];
 
-      const rows = fields.map(field =>
-        new ActionRowBuilder().addComponents(
-          new TextInputBuilder()
-            .setCustomId(field.id)
-            .setLabel(field.label.slice(0, 45))
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true)
+     const rows = fields.map(field =>
+  new ActionRowBuilder().addComponents(
+    new TextInputBuilder()
+      .setCustomId(field.id)
+      .setLabel(field.label.slice(0, 45))
+      .setStyle(TextInputStyle.Short)
+      .setPlaceholder(field.placeholder || '')
+      .setRequired(true)
         )
       );
 
@@ -79,12 +80,31 @@ client.on(Events.InteractionCreate, async (interaction) => {
         .setTitle('Tier Заявка — Шаг 1');
 
       const step1Fields = [
-    { id: 'tier_rules', label: 'Готовы ли вы принимать участие в турнирах?', placeholder: 'Да, готов. / Нет, не готов.' },
-    { id: 'tier_micro', label: 'Знание правил турниров Majestic Cyber League.', placeholder: 'Да, знаю. / Нет, не знаю.' },
-    { id: 'tier_behavior', label: 'Откаты с Каптов (Чем больше, тем лучше)', placeholder: 'https://youtube.com/...' },
-    { id: 'tier_shooting', label: 'Откаты с RP мероприятий (от 5 минут)', placeholder: 'https://youtube.com/...' },
-    { id: 'tier_comment', label: 'Откаты с турниров(от 5 минут)', placeholder: 'https://youtube.com/...' }
-  ];
+  {
+    id: 'tier_name',
+    label: 'Ник | Статик | Возраст',
+    placeholder: 'amore | tier | 17',
+    style: TextInputStyle.Short
+  },
+  {
+    id: 'tier_timezone',
+    label: 'Ваш часовой пояс | Прайм-тайм',
+    placeholder: 'GMT+3 | 19:00–23:00',
+    style: TextInputStyle.Short
+  },
+  {
+    id: 'tier_families',
+    label: 'Сколько у вас часов в GTA V?',
+    placeholder: '1400+ часов, играл на Majestic, Rodina...',
+    style: TextInputStyle.Paragraph
+  },
+  {
+    id: 'tier_reason',
+    label: 'Как оцениваете свою игру? (0–10)',
+    placeholder: '7 — умею стрелять, знаю правила, учусь играть в тиме',
+    style: TextInputStyle.Paragraph
+  }
+];
   {
     id: 'tier_reason',
     label: 'Как оцениваете свою игру? (0–10)',
@@ -164,20 +184,41 @@ const rows = step1Fields.map(field =>
     .setTitle('Tier Заявка — Шаг 2');
 
   const step2Fields = [
-    { id: 'tier_rules', label: 'Готовы ли вы принимать участие в турнирах?', placeholder: 'Да, готов. / Нет, не готов.' },
-    { id: 'tier_micro', label: 'Знание правил турниров Majestic Cyber League.', placeholder: 'Да, знаю. / Нет, не знаю.' },
-    { id: 'tier_behavior', label: 'Откаты с Каптов (Чем больше, тем лучше)', placeholder: 'https://youtube.com/...' },
-    { id: 'tier_shooting', label: 'Откаты с RP мероприятий (от 5 минут)', placeholder: 'https://youtube.com/...' },
-    { id: 'tier_comment', label: 'Откаты с турниров(от 5 минут)', placeholder: 'https://youtube.com/...' }
-  ];
+  {
+    id: 'tier_rules',
+    label: 'Готовы ли вы принимать участие в турнирах?',
+    placeholder: 'Да, готов. / Нет, не готов.',
+  },
+  {
+    id: 'tier_micro',
+    label: 'Знание правил турниров Majestic Cyber League.',
+    placeholder: 'Да, знаю. / Нет, не знаю.',
+  },
+  {
+    id: 'tier_behavior',
+    label: 'Откаты с Каптов (чем больше, тем лучше)',
+    placeholder: 'https://youtube.com/...',
+  },
+  {
+    id: 'tier_shooting',
+    label: 'Откаты с RP мероприятий (от 5 минут)',
+    placeholder: 'https://youtube.com/...',
+  },
+  {
+    id: 'tier_comment',
+    label: 'Откаты с турниров (от 5 минут)',
+    placeholder: 'https://youtube.com/...',
+  }
+];
 
   const rows = step2Fields.map(field =>
-    new ActionRowBuilder().addComponents(
-      new TextInputBuilder()
-        .setCustomId(field.id)
-        .setLabel(field.label.slice(0, 45))
-        .setStyle(TextInputStyle.Short)
-        .setRequired(true)
+  new ActionRowBuilder().addComponents(
+    new TextInputBuilder()
+      .setCustomId(field.id)
+      .setLabel(field.label.slice(0, 45))
+      .setPlaceholder(field.placeholder || '')
+      .setStyle(TextInputStyle.Short)
+      .setRequired(true)
     )
   );
 
