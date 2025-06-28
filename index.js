@@ -59,11 +59,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
           .setTitle('Подать заявку в MAIN');
 
         const inputs = [
-  { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
-  { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
-  { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
-  { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
-  { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short }
+  { id: 'full_name', label: 'Ник | Статик | Возраст', style: TextInputStyle.Short },
+  { id: 'stat_id', label: 'Ваш часовой пояс | Прайм-тайм', style: TextInputStyle.Short },
+  { id: 'prime_time', label: 'Сколько у вас часов в GTA V?', style: TextInputStyle.Paragraph },
+  { id: 'karaba_link', label: 'Готовы ли вы участвовать во всех турнирах?', style: TextInputStyle.Short },
+  { id: 'saiga_link', label: 'Откат стрельбы', style: TextInputStyle.Short }
 ];
 
         const rows = inputs.map(input =>
@@ -91,11 +91,11 @@ const embed = new EmbedBuilder()
   .setTitle('**Новая заявка в MAIN**')
   .setColor(0x5865f2)
   .setDescription(
-    `**Имя и фамилия в игре**\n${get('full_name')}\n\n` +
-    `**Статистический ID**\n${get('stat_id')}\n\n` +
-    `**Ваш прайм-тайм**\n${get('prime_time')}\n\n` +
-    `**Откат стрельбы (Караба)**\n${get('karaba_link')}\n\n` +
-    `**Откат стрельбы (Сайга)**\n${get('saiga_link')}\n\n` +
+    `**Ник | Статик | Возраст**\n${get('full_name')}\n\n` +
+    `**Ваш часовой пояс | Прайм-тайм**\n${get('stat_id')}\n\n` +
+    `**Сколько у вас часов в GTA V?**\n${get('prime_time')}\n\n` +
+    `**Готовы ли вы участвовать во всех турнирах?**\n${get('karaba_link')}\n\n` +
+    `**Откат стрельбы**\n${get('saiga_link')}\n\n` +
     `**Ваш Discord**\n${userTag}\n\n` +
     `**ID Discord**\n${userId}`
   );
