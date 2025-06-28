@@ -15,6 +15,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 // Настройки
 const INVITE_CHANNEL_ID = '1387148896320487564';
 const CHANNEL_LOG_TIER_ID = '1349389519287357470';
+const CHANNEL_LOG_MAIN_ID = '1300952587930959942';
 const LEADER_ROLE_ID = '1200040982746517595';
 const DEPUTY_ROLE_ID = '1200045928460058768';
 const HIGH_ROLE_ID = '1200046656666730527';
@@ -62,7 +63,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         new ActionRowBuilder().addComponents(
           new TextInputBuilder()
             .setCustomId(field.id)
-            .setLabel(field.label)
+            .setLabel(field.label.slice(0, 45))
             .setStyle(TextInputStyle.Short)
             .setRequired(true)
         )
@@ -80,7 +81,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       const step1Fields = [
   { id: 'tier_name', label: 'Ник | Статик | Возраст', style: TextInputStyle.Short },
   { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм', style: TextInputStyle.Short },
-  { id: 'tier_families', label: 'В каких семьях состояли? Почему выбрали нас?', style: TextInputStyle.Paragraph }
+  { id: 'tier_families', label: 'В каких семьях состояли?', style: TextInputStyle.Paragraph },
+  { id: 'tier_reason', label: 'Почему выбрали нас?', style: TextInputStyle.Paragraph }
 ];
 
 const rows = step1Fields.map(field =>
@@ -114,7 +116,6 @@ const rows = step1Fields.map(field =>
         `**ID Discord**\n${interaction.user.id}`
       );
 
-    const CHANNEL_LOG_MAIN_ID = 'ID_ВАШЕГО_КАНАЛА'; // если ещё не определён — добавь в настройки
     const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_MAIN_ID);
     const mentions = `<@&${LEADER_ROLE_ID}> <@&${DEPUTY_ROLE_ID}> <@&${HIGH_ROLE_ID}>`;
     if (logChannel) {
