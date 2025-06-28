@@ -80,6 +80,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         );
 
         modal.addComponents(...rows);
+        await interaction.deferUpdate();
         await interaction.showModal(modal);
       }
     }
@@ -114,8 +115,19 @@ if (logChannel) {
     embeds: [embed],
   });
 }
+await interaction.channel.send({
+  content: 'Хотите подать ещё одну заявку?',
+  components: [
+    new ActionRowBuilder().addComponents(
+      new StringSelectMenuBuilder()
+        .setCustomId('application_selector')
+        .setPlaceholder('Выберите тип заявки')
+        .addOptions([{ label: 'Main', value: 'main', emoji: '📝' }])
+    )
+  ]
+});
   await interaction.reply({ content: '✅ Заявка успешно отправлена!', ephemeral: true });
- }
+  }
 });
 
 client.login(process.env.TOKEN);
