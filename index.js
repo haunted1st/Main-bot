@@ -81,8 +81,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
       const step1Fields = [
   { id: 'tier_name', label: 'Ник | Статик | Возраст', style: TextInputStyle.Short },
   { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм', style: TextInputStyle.Short },
-  { id: 'tier_families', label: 'В каких семьях состояли?', style: TextInputStyle.Paragraph },
-  { id: 'tier_reason', label: 'Почему выбрали нас?', style: TextInputStyle.Paragraph }
+  { id: 'tier_families', label: 'Сколько у вас часов в GTA V?', style: TextInputStyle.Paragraph },
+  { id: 'tier_reason', label: 'Как оцениваете свою игру? (0-10)', style: TextInputStyle.Paragraph }
 ];
 
 const rows = step1Fields.map(field =>
@@ -155,11 +155,11 @@ const rows = step1Fields.map(field =>
     .setTitle('Tier Заявка — Шаг 2');
 
   const step2Fields = [
-    { id: 'tier_rules', label: 'Знание правил (1–10)' },
-    { id: 'tier_micro', label: 'Микрофон и речь (1–10)' },
-    { id: 'tier_behavior', label: 'Рассудительность (1–10)' },
-    { id: 'tier_shooting', label: 'Стрельба (1–10)' },
-    { id: 'tier_comment', label: 'Комментарий для лидеров' }
+    { id: 'tier_rules', label: 'Готовы ли вы принимать участие во всех турнирах?' },
+    { id: 'tier_micro', label: 'Знание правил турниров Majestic Cyber League.' },
+    { id: 'tier_behavior', label: 'Откаты с Каптов (Чем больше, тем лучше)' },
+    { id: 'tier_shooting', label: 'Откаты с RP мероприятий (от 5 минут)' },
+    { id: 'tier_comment', label: 'Откаты с турниров(от 5 минут)' }
   ];
 
   const rows = step2Fields.map(field =>
@@ -190,18 +190,18 @@ if (interaction.type === InteractionType.ModalSubmit && interaction.customId ===
     .setTitle('**Новая заявка в TIER**')
     .setColor(0xf59e42)
     .setDescription(
-      `**Ник | Статик | Возраст**\n${saved.tier_name}\n\n` +
-      `**Часовой пояс | Прайм-тайм**\n${saved.tier_timezone}\n\n` +
-      `**Семьи**\n${saved.tier_families}\n\n` +
-      `**Почему выбрали нас?**\n${saved.tier_reason}\n\n` +
-      `**Знание правил:** ${get('tier_rules')}\n` +
-      `**Микрофон и речь:** ${get('tier_micro')}\n` +
-      `**Рассудительность:** ${get('tier_behavior')}\n` +
-      `**Стрельба:** ${get('tier_shooting')}\n\n` +
-      `**Комментарий:**\n${get('tier_comment')}\n\n` +
-      `**Ваш Discord:** <@${userId}>\n` +
-      `**ID Discord:** ${userId}`
-    );
+  `**Ник | Статик | Возраст**\n${saved.tier_name}\n\n` +
+  `**Часовой пояс | Прайм-тайм**\n${saved.tier_timezone}\n\n` +
+  `**Семьи**\n${saved.tier_families}\n\n` +
+  `**Почему выбрали нас?**\n${saved.tier_reason}\n\n` +
+  `**Знание правил**\n${get('tier_rules')}\n\n` +
+  `**Микрофон и речь**\n${get('tier_micro')}\n\n` +
+  `**Рассудительность**\n${get('tier_behavior')}\n\n` +
+  `**Стрельба**\n${get('tier_shooting')}\n\n` +
+  `**Комментарий**\n${get('tier_comment')}\n\n` +
+  `**Ваш Discord**\n<@${userId}>\n` +
+  `**ID Discord**\n${userId}`
+);
 
   const logChannel = interaction.guild.channels.cache.get(CHANNEL_LOG_TIER_ID);
   const mentions = `<@&${LEADER_ROLE_ID}> <@&${DEPUTY_ROLE_ID}> <@&${HIGH_ROLE_ID}>`;
