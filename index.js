@@ -156,9 +156,9 @@ const rows = step1Fields.map(field =>
       .setDescription(
         `**Ник | Статик | Возраст**\n${get('full_name')}\n\n` +
         `**Часовой пояс | Прайм-тайм**\n${get('timezone')}\n\n` +
-        `**Часы в GTA V**\n${get('gta_hours')}\n\n` +
-        `**Готовность к турнирам**\n${get('tournaments')}\n\n` +
-        `**Откат стрельбы (Сайга)**\n${get('saiga')}\n\n` +
+        `**Сколько у вас часов в GTA V?**\n${get('gta_hours')}\n\n` +
+        `**Готовы ли вы участвовать во всех турнирах?**\n${get('tournaments')}\n\n` +
+        `**Откат стрельбы (Сайга + Тяжки)**\n${get('saiga')}\n\n` +
         `**Ваш Discord**\n<@${interaction.user.id}>\n\n` +
         `**ID Discord**\n${interaction.user.id}`
       );
@@ -260,13 +260,13 @@ if (interaction.type === InteractionType.ModalSubmit && interaction.customId ===
     .setDescription(
   `**Ник | Статик | Возраст**\n${saved.tier_name}\n\n` +
   `**Часовой пояс | Прайм-тайм**\n${saved.tier_timezone}\n\n` +
-  `**Семьи**\n${saved.tier_families}\n\n` +
-  `**Почему выбрали нас?**\n${saved.tier_reason}\n\n` +
-  `**Знание правил**\n${get('tier_rules')}\n\n` +
-  `**Микрофон и речь**\n${get('tier_micro')}\n\n` +
-  `**Рассудительность**\n${get('tier_behavior')}\n\n` +
-  `**Стрельба**\n${get('tier_shooting')}\n\n` +
-  `**Комментарий**\n${get('tier_comment')}\n\n` +
+  `**Сколько у вас часов в GTA V?**\n${saved.tier_families}\n\n` +
+  `**Как оцениваете свою игру?**\n${saved.tier_reason}\n\n` +
+  `**Готовы ли вы принимать участие в турнирах?**\n${get('tier_rules')}\n\n` +
+  `**Знание правил турниров Majestic Cyber League.**\n${get('tier_micro')}\n\n` +
+  `**Откаты с Каптов (чем больше, тем лучше)**\n${get('tier_behavior')}\n\n` +
+  `**Откаты с RP мероприятий (от 5 минут)**\n${get('tier_shooting')}\n\n` +
+  `**Откаты с турниров (от 5 минут)**\n${get('tier_comment')}\n\n` +
   `**Ваш Discord**\n<@${userId}>\n` +
   `**ID Discord**\n${userId}`
 );
