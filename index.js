@@ -124,9 +124,7 @@ const rows = step1Fields.map(field =>
 
     return interaction.reply({ content: '✅ Заявка в MAIN отправлена!', ephemeral: true });
   }
-
-  // Tier Шаг 1
-  if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'tier_step1') {
+    if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'tier_step1') {
   const userId = interaction.user.id;
 
   tierApplications.set(userId, {
@@ -136,6 +134,22 @@ const rows = step1Fields.map(field =>
     tier_reason: interaction.fields.getTextInputValue('tier_reason'),
   });
 
+  const nextButton = new ButtonBuilder()
+    .setCustomId('tier_step2_button')
+    .setLabel('Перейти ко 2 шагу')
+    .setStyle(ButtonStyle.Primary);
+
+  const row = new ActionRowBuilder().addComponents(nextButton);
+
+  return interaction.reply({
+    content: '✅ Шаг 1 заявки сохранён. Нажмите кнопку ниже, чтобы перейти ко 2 шагу:',
+    components: [row],
+    ephemeral: true,
+  });
+}
+
+  // Tier Шаг 1
+  if (interaction.isButton() && interaction.customId === 'tier_step2_button') {
   const modal2 = new ModalBuilder()
     .setCustomId('tier_step2')
     .setTitle('Tier Заявка — Шаг 2');
@@ -152,7 +166,7 @@ const rows = step1Fields.map(field =>
     new ActionRowBuilder().addComponents(
       new TextInputBuilder()
         .setCustomId(field.id)
-        .setLabel(field.label)
+        .setLabel(field.label.slice(0, 45))
         .setStyle(TextInputStyle.Short)
         .setRequired(true)
     )
