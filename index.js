@@ -118,6 +118,4 @@ if (logChannel) {
  }
 });
 
-});
-
 client.login(process.env.TOKEN);
