@@ -155,7 +155,7 @@ const rows = step1Fields.map(field =>
     .setTitle('Tier Заявка — Шаг 2');
 
   const step2Fields = [
-    { id: 'tier_rules', label: 'Готовы ли вы принимать участие во всех турнирах?' },
+    { id: 'tier_rules', label: 'Готовы ли вы принимать участие в турнирах?' },
     { id: 'tier_micro', label: 'Знание правил турниров Majestic Cyber League.' },
     { id: 'tier_behavior', label: 'Откаты с Каптов (Чем больше, тем лучше)' },
     { id: 'tier_shooting', label: 'Откаты с RP мероприятий (от 5 минут)' },
