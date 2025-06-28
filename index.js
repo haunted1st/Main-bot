@@ -52,11 +52,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
         .setTitle('Подать заявку в MAIN');
 
       const fields = [
-        { id: 'full_name', label: 'Ник | Статик | Возраст' },
-        { id: 'timezone', label: 'Ваш часовой пояс | Прайм-тайм' },
-        { id: 'gta_hours', label: 'Сколько у вас часов в GTA V?' },
-        { id: 'tournaments', label: 'Готовы ли вы участвовать во всех турнирах?' },
-        { id: 'saiga', label: 'Откат стрельбы' }
+        { id: 'full_name', label: 'Ник | Статик | Возраст', placeholder: 'Sky | 100000 | 20' },
+        { id: 'timezone', label: 'Ваш часовой пояс | Прайм-тайм', placeholder: '+1 от МСК | 14:00-00:00' },
+        { id: 'gta_hours', label: 'Сколько у вас часов в GTA V?', placeholder: '1488+ часов' },
+        { id: 'tournaments', label: 'Готовы ли вы участвовать во всех турнирах?', placeholder: 'Да, готов.' },
+        { id: 'saiga', label: 'Откат стрельбы (Сайги + Тяжки)', placeholder: 'https://youtube.com/(от 5 минут)' }
       ];
 
       const rows = fields.map(field =>
@@ -79,18 +79,39 @@ client.on(Events.InteractionCreate, async (interaction) => {
         .setTitle('Tier Заявка — Шаг 1');
 
       const step1Fields = [
-  { id: 'tier_name', label: 'Ник | Статик | Возраст', style: TextInputStyle.Short },
-  { id: 'tier_timezone', label: 'Ваш часовой пояс | Прайм-тайм', style: TextInputStyle.Short },
-  { id: 'tier_families', label: 'Сколько у вас часов в GTA V?', style: TextInputStyle.Paragraph },
-  { id: 'tier_reason', label: 'Как оцениваете свою игру? (0-10)', style: TextInputStyle.Paragraph }
+  {
+    id: 'tier_name',
+    label: 'Ник | Статик | Возраст',
+    placeholder: 'amore | 3533 | 21',
+    style: TextInputStyle.Short
+  },
+  {
+    id: 'tier_timezone',
+    label: 'Ваш часовой пояс | Прайм-тайм',
+    placeholder: '2+ МСК | 14:00–00:00',
+    style: TextInputStyle.Short
+  },
+  {
+    id: 'tier_families',
+    label: 'Сколько у вас часов в GTA V?',
+    placeholder: '1488+ часов',
+    style: TextInputStyle.Paragraph
+  },
+  {
+    id: 'tier_reason',
+    label: 'Как оцениваете свою игру? (0–10)',
+    placeholder: '7 — умею стрелять, знаю правила, учусь играть в тиме',
+    style: TextInputStyle.Paragraph
+  }
 ];
 
 const rows = step1Fields.map(field =>
   new ActionRowBuilder().addComponents(
     new TextInputBuilder()
       .setCustomId(field.id)
-      .setLabel(field.label.slice(0, 45)) // важно ограничить до 45 символов
-      .setStyle(field.style || TextInputStyle.Short)
+      .setLabel(field.label.slice(0, 45))
+      .setPlaceholder(field.placeholder || '')
+      .setStyle(TextInputStyle.Short)
       .setRequired(true)
   )
 );
@@ -155,11 +176,11 @@ const rows = step1Fields.map(field =>
     .setTitle('Tier Заявка — Шаг 2');
 
   const step2Fields = [
-    { id: 'tier_rules', label: 'Готовы ли вы принимать участие в турнирах?' },
-    { id: 'tier_micro', label: 'Знание правил турниров Majestic Cyber League.' },
-    { id: 'tier_behavior', label: 'Откаты с Каптов (Чем больше, тем лучше)' },
-    { id: 'tier_shooting', label: 'Откаты с RP мероприятий (от 5 минут)' },
-    { id: 'tier_comment', label: 'Откаты с турниров(от 5 минут)' }
+    { id: 'tier_rules', label: 'Готовы ли вы принимать участие в турнирах?', placeholder: 'Да, готов. / Нет, не готов.' },
+    { id: 'tier_micro', label: 'Знание правил турниров Majestic Cyber League.', placeholder: 'Да, знаю. / Нет, не знаю.' },
+    { id: 'tier_behavior', label: 'Откаты с Каптов (Чем больше, тем лучше)', placeholder: 'https://youtube.com/...' },
+    { id: 'tier_shooting', label: 'Откаты с RP мероприятий (от 5 минут)', placeholder: 'https://youtube.com/...' },
+    { id: 'tier_comment', label: 'Откаты с турниров(от 5 минут)', placeholder: 'https://youtube.com/...' }
   ];
 
   const rows = step2Fields.map(field =>
