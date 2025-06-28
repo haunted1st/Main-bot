@@ -48,15 +48,16 @@ client.once(Events.ClientReady, async () => {
 });
 
 // Обработка меню и формы
-client.on(Events.InteractionCreate, async (interaction) => {
-  // Выбор типа заявки
-  if (interaction.isStringSelectMenu() && interaction.customId === 'application_selector') {
-  const selected = interaction.values[0];
+client.on(Events.InteractionCreate, async interaction => {
+  if (!interaction.isStringSelectMenu()) return;
 
-  if (selected === 'main') {
-    const modal = new ModalBuilder()
-      .setCustomId('main_application')
-      .setTitle('Заявка в MAIN');
+  if (interaction.customId === 'application_selector') {
+    const selected = interaction.values[0];
+
+    if (selected === 'main') {
+      const modal = new ModalBuilder()
+        .setCustomId('main_application')
+        .setTitle('Заявка в MAIN');
 
     const inputs = [
   { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
@@ -77,10 +78,8 @@ const rows = inputs.map(input =>
   )
 );
 
-modal.addComponents(...rows);
+    modal.addComponents(...rows);
 
-    // ✅ defer first then show modal
-    await interaction.deferUpdate();
     await interaction.showModal(modal);
   }
 }
