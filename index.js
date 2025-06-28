@@ -51,34 +51,38 @@ client.once(Events.ClientReady, async () => {
 client.on(Events.InteractionCreate, async (interaction) => {
   // Выбор типа заявки
   if (interaction.isStringSelectMenu() && interaction.customId === 'application_selector') {
-    if (interaction.values[0] === 'main') {
-      const modal = new ModalBuilder()
-        .setCustomId('main_application')
-        .setTitle('Заявка в MAIN');
+  const selected = interaction.values[0];
 
-      const inputs = [
-        { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
-        { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
-        { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
-        { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
-        { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short },
-        { id: 'discord_name', label: 'Ваш Discord', style: TextInputStyle.Short },
-      ];
+  if (selected === 'main') {
+    const modal = new ModalBuilder()
+      .setCustomId('main_application')
+      .setTitle('Заявка в MAIN');
 
-      const rows = inputs.map(input =>
-        new ActionRowBuilder().addComponents(
-          new TextInputBuilder()
-            .setCustomId(input.id)
-            .setLabel(input.label)
-            .setStyle(input.style)
-            .setRequired(true)
-        )
-      );
+    const inputs = [
+      { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
+      { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
+      { id: 'prime_time', label: 'Ваш прайм-тайм', style: TextInputStyle.Paragraph },
+      { id: 'karaba_link', label: 'Откат стрельбы (Караба)', style: TextInputStyle.Short },
+      { id: 'saiga_link', label: 'Откат стрельбы (Сайга)', style: TextInputStyle.Short }
+    ];
 
-      modal.addComponents(...rows.slice(0, 5)); // Discord API максимум 5 компонентов
-      await interaction.showModal(modal);
-    }
+    const rows = inputs.map(input =>
+      new ActionRowBuilder().addComponents(
+        new TextInputBuilder()
+          .setCustomId(input.id)
+          .setLabel(input.label)
+          .setStyle(input.style)
+          .setRequired(true)
+      )
+    );
+
+    modal.addComponents(...rows.slice(0, 5));
+
+    // ✅ defer first then show modal
+    await interaction.deferUpdate();
+    await interaction.showModal(modal);
   }
+}
 
   // Обработка отправки формы
   if (interaction.type === InteractionType.ModalSubmit && interaction.customId === 'main_application') {
