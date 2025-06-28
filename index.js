@@ -61,9 +61,9 @@ client.on(Events.InteractionCreate, async (interaction) => {
         const inputs = [
           { id: 'full_name', label: 'Имя и фамилия в игре', style: TextInputStyle.Short },
           { id: 'stat_id', label: 'Статистический ID', style: TextInputStyle.Short },
-          { id: 'prime_time', label: 'Ваш прайм-тайм ( основное, наилучшее время нахождения в игре )', style: TextInputStyle.Paragraph },
-          { id: 'karaba_link', label: 'Откат стрельбы GunGame (Караба, бой насмерть, от 2-ух минут)', style: TextInputStyle.Short },
-          { id: 'saiga_link', label: 'Откат стрельбы GunGame (Сайга, бой насмерть, от 2-ух минут)', style: TextInputStyle.Short },
+          { id: 'prime_time', label: 'Ваш прайм-тайм (основное время в игре)', style: TextInputStyle.Paragraph },
+          { id: 'karaba_link', label: 'Откат стрельбы GunGame (Караба от 2-ух минут)', style: TextInputStyle.Short },
+          { id: 'saiga_link', label: 'Откат стрельбы GunGame (Сайга от 2-ух минут)', style: TextInputStyle.Short },
           { id: 'discord_name', label: 'Ваш Discord (пример: user#0000)', style: TextInputStyle.Short },
         ];
 
