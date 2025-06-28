@@ -32,22 +32,22 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // Отправка SELECT меню
 client.once(Events.ClientReady, async () => {
-  console.log(`🤖 Бот запущен как ${client.user.tag}`);
-
   const channel = await client.channels.fetch(INVITE_CHANNEL_ID);
-  if (!channel) return console.error('❌ Канал не найден');
+  if (!channel) return console.error('Канал не найден');
+
   const menu = new StringSelectMenuBuilder()
-  .setCustomId('application_selector')
-  .setPlaceholder('Выберите тип заявки')
-  .addOptions([
-    { label: 'Main', value: 'main', emoji: '📝' }
-  ]);
+    .setCustomId('application_selector')
+    .setPlaceholder('Выберите тип заявки')
+    .addOptions([
+      { label: 'Main', value: 'main', emoji: '📝' }
+    ]);
 
-const row = new ActionRowBuilder().addComponents(menu);
+  const row = new ActionRowBuilder().addComponents(menu);
 
-await channel.send({
-  content: 'Выберите тип заявки:',
-  components: [row]
+  await channel.send({
+    content: 'Выберите тип заявки:',
+    components: [row]
+  });
 });
 
 // Обработка меню и формы
