@@ -214,17 +214,17 @@ const rows = step1Fields.map(field =>
   },
   {
     id: 'tier_behavior',
-    label: 'Откаты с Каптов (чем больше, тем лучше)',
+    label: 'Откаты с Каптов',
     placeholder: 'https://youtube.com/...',
   },
   {
     id: 'tier_shooting',
-    label: 'Откаты с RP мероприятий (от 5 минут)',
+    label: 'Откаты с RP мероприятий',
     placeholder: 'https://youtube.com/...',
   },
   {
     id: 'tier_comment',
-    label: 'Откаты с турниров (от 5 минут)',
+    label: 'Откаты с турниров',
     placeholder: 'https://youtube.com/...',
   }
 ];
@@ -264,9 +264,9 @@ if (interaction.type === InteractionType.ModalSubmit && interaction.customId ===
   `**В какие игры играли помимо GTA V?**\n${saved.tier_reason}\n\n` +
   `**Готовы ли вы принимать участие в турнирах?**\n${get('tier_rules')}\n\n` +
   `**Знание правил турниров Majestic Cyber League.**\n${get('tier_micro')}\n\n` +
-  `**Откаты с Каптов (чем больше, тем лучше)**\n${get('tier_behavior')}\n\n` +
-  `**Откаты с RP мероприятий (от 5 минут)**\n${get('tier_shooting')}\n\n` +
-  `**Откаты с турниров (от 5 минут)**\n${get('tier_comment')}\n\n` +
+  `**Откаты с Каптов**\n${get('tier_behavior')}\n\n` +
+  `**Откаты с RP мероприятий**\n${get('tier_shooting')}\n\n` +
+  `**Откаты с турниров**\n${get('tier_comment')}\n\n` +
   `**Ваш Discord**\n<@${userId}>\n` +
   `**ID Discord**\n${userId}`
 );
