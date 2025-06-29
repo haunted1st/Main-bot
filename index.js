@@ -33,7 +33,7 @@ client.once(Events.ClientReady, async () => {
     .setPlaceholder('Выберите тип заявки')
     .addOptions([
       { label: 'Main', value: 'main', emoji: '📝' },
-      { label: 'Tier', value: 'tier', emoji: '🧩' },
+      { label: 'Tier', value: 'tier', emoji: '🥇' },
     ]);
 
   const row = new ActionRowBuilder().addComponents(menu);
@@ -78,7 +78,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
   },
   {
     id: 'saiga',
-    label: 'Откат стрельбы (Сайга + Тяжи)',
+    label: 'Откат стрельбы (Тяжки + Сайга)',
     placeholder: 'https://youtube.com/(от 5 минут)',
     style: TextInputStyle.Paragraph
   }
@@ -125,8 +125,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
   },
   {
     id: 'tier_reason',
-    label: 'Как оцениваете свою игру?',
-    placeholder: '7 — умею стрелять, знаю правила, учусь играть в тиме',
+    label: 'В какие игры играли помимо GTA V?',
+    placeholder: 'CS2,Tarkov,Dota2,...',
     style: TextInputStyle.Paragraph
   }
 ];
@@ -158,7 +158,7 @@ const rows = step1Fields.map(field =>
         `**Часовой пояс | Прайм-тайм**\n${get('timezone')}\n\n` +
         `**Сколько у вас часов в GTA V?**\n${get('gta_hours')}\n\n` +
         `**Готовы ли вы участвовать во всех турнирах?**\n${get('tournaments')}\n\n` +
-        `**Откат стрельбы (Сайга + Тяжки)**\n${get('saiga')}\n\n` +
+        `**Откат стрельбы (Тяжки + Сайга)**\n${get('saiga')}\n\n` +
         `**Ваш Discord**\n<@${interaction.user.id}>\n\n` +
         `**ID Discord**\n${interaction.user.id}`
       );
@@ -189,7 +189,7 @@ const rows = step1Fields.map(field =>
   const row = new ActionRowBuilder().addComponents(nextButton);
 
   return interaction.reply({
-    content: '✅ Шаг 1 заявки сохранён. Нажмите кнопку ниже, чтобы перейти ко 2 шагу:',
+    content: '⏳ Нажмите кнопку ниже, чтобы перейти ко 2 шагу:',
     components: [row],
     ephemeral: true,
   });
@@ -261,7 +261,7 @@ if (interaction.type === InteractionType.ModalSubmit && interaction.customId ===
   `**Ник | Статик | Возраст**\n${saved.tier_name}\n\n` +
   `**Часовой пояс | Прайм-тайм**\n${saved.tier_timezone}\n\n` +
   `**Сколько у вас часов в GTA V?**\n${saved.tier_families}\n\n` +
-  `**Как оцениваете свою игру?**\n${saved.tier_reason}\n\n` +
+  `**В какие игры играли помимо GTA V?**\n${saved.tier_reason}\n\n` +
   `**Готовы ли вы принимать участие в турнирах?**\n${get('tier_rules')}\n\n` +
   `**Знание правил турниров Majestic Cyber League.**\n${get('tier_micro')}\n\n` +
   `**Откаты с Каптов (чем больше, тем лучше)**\n${get('tier_behavior')}\n\n` +
