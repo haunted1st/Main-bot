@@ -13,9 +13,9 @@ app.listen(3000, () => console.log('🌐 Express-сервер запущен н�
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 // Настройки
-const INVITE_CHANNEL_ID = '1387148896320487564';
-const CHANNEL_LOG_TIER_ID = '1349389519287357470';
-const CHANNEL_LOG_MAIN_ID = '1300952587930959942';
+const INVITE_CHANNEL_ID = '1388891876064497664';
+const CHANNEL_LOG_TIER_ID = '1388892113898569758';
+const CHANNEL_LOG_MAIN_ID = '1388891949821595668';
 const LEADER_ROLE_ID = '1200040982746517595';
 const DEPUTY_ROLE_ID = '1200045928460058768';
 const HIGH_ROLE_ID = '1200046656666730527';
